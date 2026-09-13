@@ -1,32 +1,39 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using WhiteLagoon.Web.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using WhiteLagoon.Domain;
+using WhiteLagoon.Infrastructure;
+using WhiteLagoon.Web.ViewModels;
 
-namespace WhiteLagoon.Web.Controllers;
 
-public class HomeController : Controller
+
+namespace WhiteLagoon.Web.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
+        private readonly ApplicationDbContext _context;
+
+        // 1. Inject the database context
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            // 2. Create a new instance of your View Model
+            HomeVM homeVM = new HomeVM()
+            {
+                // Grab all villas from the database
+                Villas = _context.Villas.ToList(),
+                
+                // Set some default values for the search bar
+                CheckInDate = DateOnly.FromDateTime(DateTime.Now),
+                Nights = 1
+            };
+
+            // 3. Pass the View Model to the view
+            return View(homeVM);
+        }
     }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+   
 }
-

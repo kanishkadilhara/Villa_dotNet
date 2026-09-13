@@ -9,6 +9,7 @@ namespace WhiteLagoon.Infrastructure
         }
 
         public DbSet<Villa> Villas { get; set; }
+        public DbSet<VillaNumber> VillaNumbers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,7 +17,7 @@ namespace WhiteLagoon.Infrastructure
            modelBuilder.Entity<Villa>().HasData(
              new Villa
                {
-                 Id = 1,
+                 VillaId = 1,
                  Name = "Royal Villa",
                  Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                  ImageUrl = "https://placehold.co/600x400",
@@ -26,7 +27,7 @@ namespace WhiteLagoon.Infrastructure
                 },
             new Villa
                 {
-                    Id = 2,
+                    VillaId = 2,
                     Name = "Premium Pool Villa",
                     Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                     ImageUrl = "https://placehold.co/600x401",
@@ -36,13 +37,33 @@ namespace WhiteLagoon.Infrastructure
                 },
             new Villa
             {
-                Id = 3,
+                VillaId = 3,
                 Name = "Luxury Pool Villa",
                 Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                 ImageUrl = "https://placehold.co/600x402",
                 occupancy = 4,
                 Price = 400,
                 SquareMeters = 750,
+            }
+           );
+           modelBuilder.Entity<VillaNumber>().HasData(
+            new VillaNumber
+            {
+                Villa_Number = 101,
+                VillaId = 1,
+                SpecialDetails = "This is the special details for villa number 101"
+            },
+            new VillaNumber
+            {
+                Villa_Number = 102,
+                VillaId = 2,
+                SpecialDetails = "This is the special details for villa number 102"
+            },
+            new VillaNumber
+            {
+                Villa_Number = 103,
+                VillaId = 3,
+                SpecialDetails = "This is the special details for villa number 103"
             }
            );
         }

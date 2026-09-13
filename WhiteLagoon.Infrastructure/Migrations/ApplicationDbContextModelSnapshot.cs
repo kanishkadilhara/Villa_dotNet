@@ -24,11 +24,11 @@ namespace WhiteLagoon.Infrastructure.Migrations
 
             modelBuilder.Entity("WhiteLagoon.Domain.Villa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("VillaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VillaId"));
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -41,7 +41,8 @@ namespace WhiteLagoon.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -55,14 +56,14 @@ namespace WhiteLagoon.Infrastructure.Migrations
                     b.Property<int>("occupancy")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("VillaId");
 
                     b.ToTable("Villas");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            VillaId = 1,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://placehold.co/600x400",
                             Name = "Royal Villa",
@@ -72,7 +73,7 @@ namespace WhiteLagoon.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            VillaId = 2,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://placehold.co/600x401",
                             Name = "Premium Pool Villa",
@@ -82,7 +83,7 @@ namespace WhiteLagoon.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            VillaId = 3,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
                             ImageUrl = "https://placehold.co/600x402",
                             Name = "Luxury Pool Villa",
@@ -90,6 +91,55 @@ namespace WhiteLagoon.Infrastructure.Migrations
                             SquareMeters = 750,
                             occupancy = 4
                         });
+                });
+
+            modelBuilder.Entity("WhiteLagoon.Domain.VillaNumber", b =>
+                {
+                    b.Property<int>("Villa_Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SpecialDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Villa_Number");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("VillaNumbers");
+
+                    b.HasData(
+                        new
+                        {
+                            Villa_Number = 101,
+                            SpecialDetails = "This is the special details for villa number 101",
+                            VillaId = 1
+                        },
+                        new
+                        {
+                            Villa_Number = 102,
+                            SpecialDetails = "This is the special details for villa number 102",
+                            VillaId = 2
+                        },
+                        new
+                        {
+                            Villa_Number = 103,
+                            SpecialDetails = "This is the special details for villa number 103",
+                            VillaId = 3
+                        });
+                });
+
+            modelBuilder.Entity("WhiteLagoon.Domain.VillaNumber", b =>
+                {
+                    b.HasOne("WhiteLagoon.Domain.Villa", "Villa")
+                        .WithMany()
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }
